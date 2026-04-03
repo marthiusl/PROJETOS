@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fábrica de Devs - POO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-light p-5">
+    <div class="container">
+        <h1 class="text-center text-primary mb-4">A Fábrica de Devs</h1>
+
+        <div class="card shadow-sm p-4 mb-5">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Nome do Dev</label>
+                    <input type="text" id="input-nome" class="form-control" placeholder="Ex: João da Silva">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Linguagem Principal</label>
+                    <input type="text" id="input-lang" class="form-control" placeholder="Ex: Javascript">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Nível</label>
+                    <select id="input-nivel" class="form-select">
+                        <option value="Júnior">Júnior</option>
+                        <option value="Pleno">Pleno</option>
+                        <option value="Sênior">Sênior</option>
+                    </select>
+                </div>                
+                <div class="col-md-2 d-flex align-items-end">
+                    <button onclick="fabricar()" class="btn btn-primary w-100">Fabricar</button>
+                </div>               
+                </div>
+            </div>
+        </div>
+
+        <div id="container-cards" class="row"></div>
+        <div class="col-md-2 d-flex align-items-end">
+            <button onclick="Remover()" class="btn btn-primary w-100">Remover</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
