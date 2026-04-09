@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <title>Catálogo de Personagens</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+
+    <body class="bg-secondary p-4">
+
+        <div class="container">
+            <h1 class="text-center text-white mb-4">Catálogo de Personagens</h1>
+
+            <div class="card p-4 mb-4 shadow">
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <input type="text" id="in-nome" class="form-control" placeholder="Nome do Personagem"> 
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="in-poder" class="form-control" placeholder="Super poder">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" id="in-nivel"
+                        class="form-control" placeholder=" Nivel">
+                    </div>
+                    <div class="col-md-4">
+                        <button onclick="cadastrarHeroi()" class="btn btn-dark w-100">Cadastrar</button>
+                    </div>
+                </div>                
+            </div>
+
+            <div id="vitrine" class="row"></div>
+
+        </div>
+
+    </body>
+    <script>
+        //1 Criando o molde (A Classe)
+        class Heroi {
+
+            //O construtor recebe as peças para montar o objeto 
+            constructor(nomeRecebido, poderRecebido, nivelRecebido) {
+                this.nome = nomeRecebido;
+                this.poder = poderRecebido;
+                this.nivel = nivelRecebido;
+                //Vamos usar uma API de avatares de robos baseadosno nome! (Anteçao as crases ``)
+                this.fotoUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${nomeRecebido}`;
+            }
+
+            //O metodo (açao) que o objeto sabe fazer: desenhar o proprio HTML
+            gerarCartaoHTML(){
+                return `
+                <div class="col-md-3 mb-3">
+                    <div class="card bg-dark text-white text-center p-3 shadow">
+                        <img src="${this.fotoUrl}" height="120" alt="Avatar">
+                        <h4 class="mt-2 text-warning">${this.nome}</h4>
+                        <p class="mb-0">Poder: ${this.poder}</p>
+                        <p class="mb-0">Nivel: ${this.nivel}</p>
+                    </div>
+                </div>
+            `;
+            }
+        }
+
+        //2 A funçao do botao
+        function cadastrarHeroi(){
+            //A Captura o que o usuario digitou
+            let nome = document.getElementById('in-nome').value;
+            let poder = document.getElementById('in-poder').value;
+            let nivel = document.getElementById('in-nivel').value;
+
+            if(nome == "" || poder == "" || nivel == ""){
+                alert("Preencha todos os campos!");
+                return;
+            } 
+
+            //B Chamaa Classe para fabricar o Objeto real na memoria
+            let novoPersonagem = new Heroi(nome, poder, nivel);
+
+            //C Captura a tela e INJETA o cartao.
+            //Atençao: Usamos += para ACUMULAR e nao apagar os anteriores!
+            let vitrine = document.getElementById('vitrine');
+            vitrine.innerHTML += novoPersonagem.gerarCartaoHTML();
+
+            document.getElementById('in-nome').value = "";
+            document.getElementById('in-poder').value = "";
+            document.getElementById('in-nivel').value = "";
+        }
+    </script>
+</html>

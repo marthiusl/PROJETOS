@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Pokédex API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-white p-5">
+    <div class="container text-center" style="max-width: 500px;">
+        <h1 class="text-warning mb-4">Pokédex Hunter</h1>
+
+        <input type="text" id="in-pokemon" class="form-control mb-3" placeholder="Digite o nome (ex: pikachu) ou número...">
+        <button onclick="buscarPokemon()" class="btn btn-danger w-100 mb-4">Buscar no Servidor</button>
+        <button onclick="mudarParaShiny()" class="btn btn-danger w-100 mb-4">Versão Shiny</button>
+
+        <div id="tela-resultado" class="card bg-secondary text-white p-3 shadow">
+            <p>Aguardando busca...</p>
+        </div>        
+    </div>
+    <script>
+            let pokemonAtual = null;
+            
+         //A palavra 'async' avisa o navegador: "Essa função vai demorar, não trav a tela!"
+        async function buscarPokemon() {
+            let pokemonDigitado = document.getElementById('in-pokemon').value.toLowerCase();
+            let urlApi = `https://pokeapi.co/api/v2/pokemon/${pokemonDigitado}`;
+
+            //O 'await' faz o código pausar NESSA linha até o servidor responder
+            let resposta = await fetch(urlApi);
+
+            if(!resposta.ok || resposta.ok === false) {
+                alert ('Pokémon não encontrado');
+                return;
+            } 
+
+            //A resposta vm criptografada da internet. Precisamos traduzir para JSON!
+            let dadosJson = await resposta.json();
+
+            //Vamos ver os dados puros no console (F12) antes de desenhar a tela
+            console.log(dadosJson);
+
+            pokemonAtual = dadosJson;
+
+            desenharNaTela(dadosJson);            
+
+        }
+
+        function mudarParaShiny() {
+            let pokemonImg = document.getElementById('foto-poke');
+           pokemonImg.src = pokemonAtual.sprites.front_shiny;
+        }
+
+        function desenharNaTela(dados) {
+            let tela = document.getElementById('tela-resultado');
+
+            let listTypes = [];
+
+            if(dados.types.length > 0){
+                for(let i = 0; i < dados.types.length; i++) {
+                    let nome = dados.types[i].type.name
+                    listTypes.push(nome);
+                }
+            }
+            
+
+            //Usamos as crases (``) para injetar as variáveis do JSON.
+            //A PokeAPI guarda a foto no caminho: sprites.front_default
+            tela.innerHTML = `<h3>${dados.name.toUpperCase()}</h3>
+            <img id="foto-poke" src="${dados.sprites.front_default}" alt="Foto do Pokemon" width="150">            
+            <p><strong>Peso:</strong> ${dados.weight / 10} kg</p>
+            <p><strong>Type:</strong> ${listTypes}</p>`;
+            
+        }
+    </script>
+</body>
+</html>
